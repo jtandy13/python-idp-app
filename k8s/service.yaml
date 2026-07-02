@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: python-idp-app
+spec:
+  selector:
+    app: phython-idp-app
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 5000

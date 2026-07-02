@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: phython-idp-app
+  labels:
+    app: phython-idp-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: phython-idp-app
+  template:
+    metadata:
+      labels:
+        app: phython-idp-app
+    spec:
+      containers:
+      - name: phython-idp-app
+        image: jtandy/python-idp-app:v2
+        ports:
+        - containerPort: 5000

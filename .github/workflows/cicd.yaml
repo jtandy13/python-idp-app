@@ -38,8 +38,8 @@ jobs:
         shell: bash
         run: |
           curl -k -sSL -o argocd-linux-amd64 https://argocd-server.argocd/download/argocd-linux-amd64
-          chmod +x argocd
-          mv argocd /usr/local/bin/argocd
+          sudo chmod +x argocd
+          sudo mv argocd /usr/local/bin/argocd
       -
         name: Argocd app sync
         shell: bash

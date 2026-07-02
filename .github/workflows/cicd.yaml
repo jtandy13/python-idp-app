@@ -39,17 +39,11 @@ jobs:
         name: Checkout code
         uses: actions/checkout@v4
 
-      # 1. Installs the standalone yq binary instantly
-      - 
-        name: Set up yq
-        uses: mikefarah/yq-action@v4
-      - 
+      -
         name: Modify values for Argo CD
-        shell: bash
-        run: |
-          echo ${{ needs.ci.outputs.commit_id }}
-          pip install yq
-          yq -Yi '.image.tag = "${{ needs.ci.outputs.commit_id }}"' charts/python-idp-app/values.yaml
+        uses: mikefarah/yq@v4.45.1
+        with:
+          cmd: yq -i '.image.tag = "${{ needs.ci.outputs.commit_id }}"' charts/python-idp-app/values.yaml
       -
         name: Commit changes
         uses: EndBug/add-and-commit@v10

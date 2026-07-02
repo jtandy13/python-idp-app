@@ -38,6 +38,11 @@ jobs:
       -
         name: Checkout code
         uses: actions/checkout@v4
+
+      # 1. Installs the standalone yq binary instantly
+      - 
+        name: Set up yq
+        uses: mikefarah/yq-action@v4
       - 
         name: Modify values for Argo CD
         shell: bash

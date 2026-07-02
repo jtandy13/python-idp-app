@@ -11,6 +11,8 @@ on:
 jobs:
   ci:
     runs-on: ubuntu-latest
+    outputs:
+      commit_id: ${{ steps.sha.outputs.short }}
     steps:
       -
         name: Login to Docker Hub
@@ -34,6 +36,23 @@ jobs:
     runs-on: self-hosted
     steps:
       -
+        name: Checkout code
+        uses: actions/checkout@v4
+      - 
+        name: Modify values for Argo CD
+        shell: bash
+        run: |
+          echo ${{ needs.ci.outputs.commit_id }}
+          pip install yq
+          yq -Yi '.image.tag = "${{ needs.ci.outputs.commit_id }}"' charts/python-idp-app/values.yaml
+      -
+        name: Commit changes
+        uses: EndBug/add-and-commit@v11
+        permissions:
+          contents: write
+        with:
+          message: "Updates values.yaml with commit id ${{ needs.ci.outputs.commit_id }}"
+      -
         name: Install Argo CD CLI
         run: |
           # Grab the latest version number
@@ -54,4 +73,4 @@ jobs:
             --grpc-web \
             --username admin \
             --password ${{ secrets.ARGOCD_PASSWORD }}
-          argocd app sync python-idp-app --revision ${GITHUB_SHA::7}
+          argocd app sync python-idp-app

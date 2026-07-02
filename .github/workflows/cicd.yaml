@@ -1,4 +1,4 @@
-name: ci
+name: cicd
 
 on:
   workflow_dispatch:
@@ -9,8 +9,8 @@ on:
       - main
 
 jobs:
-  docker:
-    runs-on: self-hosted
+  ci:
+    runs-on: ubuntu-latest
     steps:
       -
         name: Login to Docker Hub
@@ -28,3 +28,18 @@ jobs:
         with:
           push: true
           tags: jtandy/python-idp-app:${{ steps.sha.outputs.short }}
+
+  cd:
+    needs: ci
+    runs-on: self-hosted
+    steps:
+      -
+        name: Argocd app sync
+        shell: bash
+        run: |
+          argocd login argocd-server.argocd \
+            --insecure \
+            --grpc-web \
+            --username admin \
+            --password ${{ secrets.ARGOCD_PASSWORD }}
+          argocd app sync python-idp-app --revision ${GITHUB_SHA::7}

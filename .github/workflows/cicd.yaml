@@ -33,11 +33,16 @@ jobs:
     needs: ci
     runs-on: self-hosted
     steps:
-      - 
-        name: Install Argocd CLI
-        shell: bash
+      -
+        name: Install Argo CD CLI
         run: |
-          curl -k -sSL -o argocd https://argocd-server.argocd/download/argocd-linux-amd64
+          # Grab the latest version number
+          VERSION=$(curl -s "https://api.github.com/repos/argoproj/argo-cd/releases/latest" | grep '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/')
+
+          # Download from GitHub directly using the -f flag so it fails instantly if it 404s
+          curl -f -sSL -o argocd "https://github.com/argoproj/argo-cd/releases/download/$VERSION/argocd-linux-amd64"
+
+          # Make executable and move to PATH
           chmod +x argocd
           sudo mv argocd /usr/local/bin/argocd
       -

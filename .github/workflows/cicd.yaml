@@ -48,8 +48,6 @@ jobs:
       -
         name: Commit changes
         uses: EndBug/add-and-commit@v11
-        permissions:
-          contents: write
         with:
           message: "Updates values.yaml with commit id ${{ needs.ci.outputs.commit_id }}"
       -

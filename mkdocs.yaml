@@ -1,0 +1,12 @@
+site_name: 'Python IDP App'
+site_description: 'Main documentation for Python IDP App features and framework APIs'
+repo_url: https://github.com/jtandy13/phython-idp-app
+edit_uri: edit/main/docs
+
+plugins:
+  - techdocs-core
+  
+# For sidebar navigation on https://backstage.io/, see `microsite/sidebars.js`
+nav:
+  - Overview:
+      - Getting started: 'docs/index.md'
